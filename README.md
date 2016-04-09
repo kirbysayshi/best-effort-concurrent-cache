@@ -45,7 +45,7 @@ if (!retrieved) {
 // Do something with retrieved
 ```
 
-A similar example is located in [examples/babel-cache.js][], which can be executed using:
+A similar example is located in [examples/babel-cache.js](examples/babel-cache.js), which can be executed using:
 
 ```sh
 $ node -r ./examples/babel-cache.js examples/babel-cache-input.js
