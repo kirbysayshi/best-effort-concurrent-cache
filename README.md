@@ -47,6 +47,26 @@ if (!retrieved) {
 // Do something with retrieved
 ```
 
+API
+---
+
+### Becc(fs, opt_statExtractor)
+
+`fs` is an implementation of a node-compatible file system module. This is to facilitate testing and allow for in-memory or in-browser caching if needed. Generally the result of calling `require('fs')` will do.
+
+`opt_statExtractor` is an optional function that is used to determine what properties of a file's [`fs.Stats`](https://nodejs.org/api/fs.html#fs_class_fs_stats) object are used to cache the file. By default, only `mtime` is used. If one wanted to create a cache that also used file size:
+
+```js
+var fs = require('fs');
+var Becc = require('becc');
+
+var becc = Becc(fs, function (stat) {
+  return stat.mtime + stat.size;
+});
+```
+
+Note: the filename is always used within the cache key.
+
 Examples
 --------
 
