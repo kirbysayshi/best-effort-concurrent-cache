@@ -5,12 +5,29 @@ var crypto = require('crypto');
 var debug = require('debug');
 var dbg = debug('best-effort-concurrent-cache');
 
-exports.cache = cache;
-exports.retrieve = retrieve;
+module.exports = function (fs, extractProps) {
+  if (!extractProps) extractProps = defaultExtractProps;
 
-function cache (cacheDir, filename, contents) {
+  ['writeFileSync', 'renameSync', 'statSync']
+  .forEach(function validateFSImplementation (prop) {
+    if (!fs[prop]) throw new Error(''
+      + 'fs implementation is missing required '
+      + '`' + prop + '` function.');
+  });
+
+  return {
+    cache: cache.bind(null, fs, extractProps),
+    retrieve: retrieve.bind(null, fs, extractProps)
+  }
+}
+
+function defaultExtractProps (stat) {
+  return stat.mtime;
+}
+
+function cache (fs, extractProps, cacheDir, filename, contents) {
   var s = fs.statSync(filename);
-  var h = hash(filename, s.mtime);
+  var h = hash(filename, extractProps(s));
   var lock = path.join(cacheDir, h + '-lock');
   var p = path.join(cacheDir, h);
   try {
@@ -23,9 +40,9 @@ function cache (cacheDir, filename, contents) {
   }
 }
 
-function retrieve (cacheDir, filename) {
+function retrieve (fs, extractProps, cacheDir, filename) {
   var s = fs.statSync(filename);
-  var h = hash(filename, s.mtime);
+  var h = hash(filename, extractProps(s));
   var lock = path.join(cacheDir, h + '-lock');
   var p = path.join(cacheDir, h);
 
@@ -43,8 +60,8 @@ function retrieve (cacheDir, filename) {
   }
 }
 
-function hash (filename, mtime) {
+function hash (filename, extra) {
   var hmac = crypto.createHmac('sha256', 'SECRET NOT REALLY');
-  hmac.update(filename + mtime);
+  hmac.update(filename + extra);
   return hmac.digest('hex');
 }

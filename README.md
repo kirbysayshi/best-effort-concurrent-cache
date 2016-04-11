@@ -18,7 +18,9 @@ Usage
 ```js
 var fs = require('fs');
 var path = require('path');
-var becc = require('best-effort-concurrent-cache');
+var Becc = require('best-effort-concurrent-cache');
+
+var becc = Becc(fs); // requires a file system implementation
 
 // Ensure cache folder exists
 var cachePath = path.join(process.cwd(), '.cache');

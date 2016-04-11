@@ -2,8 +2,9 @@
 
 var fs = require('fs');
 var path = require('path');
-var becc = require('../../index');
+var Becc = require('../../index');
 
+var becc = Becc(fs);
 var dir = path.join(__dirname, '..', '..', '.cache');
 
 fs.mkdir(dir, function (err) {

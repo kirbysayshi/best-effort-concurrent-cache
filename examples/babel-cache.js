@@ -1,6 +1,8 @@
 var fs = require('fs');
 var path = require('path');
-var becc = require('../index');
+var Becc = require('../index');
+
+var becc = Becc(fs);
 
 // Ensure cache folder exists
 var cachePath = path.join(process.cwd(), '.cache');
