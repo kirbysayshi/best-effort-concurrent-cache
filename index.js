@@ -8,7 +8,7 @@ var dbg = debug('best-effort-concurrent-cache');
 module.exports = function (fs, extractProps) {
   if (!extractProps) extractProps = defaultExtractProps;
 
-  ['writeFileSync', 'renameSync', 'statSync']
+  ['closeSync', 'openSync', 'renameSync', 'statSync', 'writeFileSync']
   .forEach(function validateFSImplementation (prop) {
     if (!fs[prop]) throw new Error(''
       + 'fs implementation is missing required '
@@ -30,8 +30,12 @@ function cache (fs, extractProps, cacheDir, filename, contents) {
   var h = hash(filename, extractProps(s));
   var lock = path.join(cacheDir, h + '-lock');
   var p = path.join(cacheDir, h);
+
   try {
-    fs.writeFileSync(lock, contents, 'utf8');
+    // wx: Throw if lock exists, and therefore abort the writing of the file.
+    var fd = fs.openSync(lock, 'wx');
+    fs.writeFileSync(fd, contents, 'utf8');
+    fs.closeSync(fd);
     fs.renameSync(lock, p);
     dbg('cache store %s', filename);
   } catch (e) {
@@ -51,7 +55,7 @@ function retrieve (fs, extractProps, cacheDir, filename) {
   try {
     fs.statSync(lock);
     return null;
-  } catch (e) {}
+  } catch (e) { }
 
   try {
     dbg('cache read %s', filename);
