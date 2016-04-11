@@ -47,16 +47,28 @@ if (!retrieved) {
 // Do something with retrieved
 ```
 
-A similar example is located in [examples/babel-cache.js](examples/babel-cache.js), which can be executed using:
+Examples
+--------
+
+A shared Babel code cache can be used to speed up parallel (or subsequent) mocha runs. See [examples/](examples/):
 
 ```sh
-$ node -r ./examples/babel-cache.js examples/babel-cache-input.js
+$ rm -rf .cache
+
+$ time node examples/mocha-test.js
+...
+real  0m2.402s
+user  0m4.797s
+sys 0m0.354s
+
+# second run...
+$ time node examples/mocha-test.js
+...
+real  0m0.628s
+user  0m0.970s
+sys 0m0.161s
 ```
 
-TODO
-----
-
-- [ ] Add a concurrent mocha example.
 
 License
 -------
