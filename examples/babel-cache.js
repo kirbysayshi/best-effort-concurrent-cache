@@ -15,6 +15,12 @@ var babel = require('babel-core');
 var oldExt = require.extensions['.js'];
 require.extensions['.js'] = function (module, filename) {
 
+  // Normally you'd want to do an exclusion list, such as not compiling
+  // node_modules at least. Babel has an `only` field in it's babelrc
+  // that is useful for this, but for demonstration purposes we're going
+  // to Babel transpile everything so there is a noticeable performance
+  // difference.
+
   // Get a cached version
   // This checks the file's mtime compared to the cached hash.
   var retrieved = becc.retrieve(cachePath, filename);
