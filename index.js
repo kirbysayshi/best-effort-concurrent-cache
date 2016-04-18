@@ -54,6 +54,7 @@ function retrieve (fs, extractProps, cacheDir, filename) {
   } catch (e) {}
 
   try {
+    dbg('cache read %s', filename);
     return fs.readFileSync(p, { encoding: 'utf8' });;
   } catch (e) {
     return null;
