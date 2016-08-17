@@ -49,7 +49,6 @@ test('stat extractor', function (t) {
 
 test('two processes', function (t) {
   t.plan(5);
-  var becc = Becc(fs);
   var dir = path.join(process.cwd(), '.cache');
   var access = path.join(__dirname, 'tools', 'access.js');
   var mtimes = [];
