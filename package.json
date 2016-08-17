@@ -1,6 +1,6 @@
 {
   "name": "best-effort-concurrent-cache",
-  "version": "2.0.1",
+  "version": "3.0.0",
   "description": "Make a best effort to offer a simple filesystem-based cache for concurrent access from mulitple processes.",
   "main": "index.js",
   "scripts": {
