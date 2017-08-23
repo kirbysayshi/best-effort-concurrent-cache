@@ -5,6 +5,8 @@ Sometimes you want to cache things using the filesystem due to an expensive proc
 
 NOTE: This package is not meant as a high-performance, bullet-proof caching utility. It is meant as a "best effort" to provide failsafe caching. In the best case, caching will happen. In the worst case, caching will not happen but your program won't fail.
 
+[![Build Status](https://travis-ci.org/kirbysayshi/best-effort-concurrent-cache.svg?branch=master)](https://travis-ci.org/kirbysayshi/best-effort-concurrent-cache)
+
 Why?
 ----
 
